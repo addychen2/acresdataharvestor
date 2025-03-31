@@ -63,10 +63,10 @@ chrome.webRequest.onCompleted.addListener(
         // Add this ID to our set of processed IDs to prevent duplicates
         collectedIds.add(data.id);
         
-        // Get crop data if we have it - use computed_acres rather than courthouse_acres
-        // Prefer computed_acres, fall back to courthouse_acres
-        const propertyAcres = data.computed_acres || data.courthouse_acres;
-        const cropDataForProperty = findMatchingCropData(propertyAcres);
+        // Use computed_acres for finding crop data, but courthouse_acres for CSV output
+        const computedAcres = data.computed_acres || data.courthouse_acres;
+        const courthouseAcres = data.courthouse_acres || data.computed_acres;
+        const cropDataForProperty = findMatchingCropData(computedAcres);
         
         // Transform to the specific fields requested
         const propertyItem = {
@@ -75,7 +75,8 @@ chrome.webRequest.onCompleted.addListener(
           County_fipscode: fipsCode,
           Sales_date: data.sale_date || '',
           Sales_amount: data.sale_amount || '',
-          Sold_acre: propertyAcres || '',
+          Sold_acre: courthouseAcres || '', // Use courthouse_acres for CSV output
+          computed_acres: computedAcres || '', // Store computed_acres for matching but don't include in CSV
           price_per_acre: data.price_per_acre_computed || data.price_per_acre_courthouse || '',
           longitude: data.centroid?.coordinates?.[0] || '',
           latitude: data.centroid?.coordinates?.[1] || '',
@@ -331,9 +332,9 @@ function updatePropertiesWithCropData(cropAcres, cropData) {
   
   // Update any property with matching acreage - using more flexible matching
   for (let i = 0; i < collectedData.length; i++) {
-    // Try to get acres from the property
-    const propertyAcres = collectedData[i].Sold_acre ? 
-                          parseFloat(collectedData[i].Sold_acre) : null;
+    // Try to get computed_acres from the property
+    const propertyAcres = collectedData[i].computed_acres ? 
+                          parseFloat(collectedData[i].computed_acres) : null;
     
     // If property has valid acreage and it matches crop acreage (with slightly more tolerance)
     if (propertyAcres && Math.abs(propertyAcres - cropAcres) < 0.15) {
