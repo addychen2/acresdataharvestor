@@ -1,0 +1,91 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 300px;
+      padding: 10px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    h3 {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .counter {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    button.clear {
+      background-color: #f44336;
+    }
+    button.clear:hover {
+      background-color: #d32f2f;
+    }
+    button.stop {
+      background-color: #f44336;
+    }
+    button.start {
+      background-color: #4CAF50;
+    }
+    .section {
+      border-top: 1px solid #ddd;
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+    .status {
+      font-weight: bold;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Acres.com Data Extractor</h2>
+  <div class="counter">
+    Properties captured: <span id="count">0</span>
+  </div>
+  <div class="info" style="margin: 5px 0; font-size: 12px; color: #555;">
+    Filtering for counties: Fresno (06019), Tulare (06107), Kern (06029), Kings (06031)
+  </div>
+  <button id="downloadBtn" disabled>Download CSV</button>
+  <button id="clearBtn" class="clear" disabled>Clear Data</button>
+  
+  <div class="section">
+    <h3>Auto-Click Yellow Markers</h3>
+    <div class="status">Status: <span id="autoClickStatus">Inactive</span></div>
+    <button id="startAutoClickBtn" class="start">Start Auto-Click</button>
+    <button id="stopAutoClickBtn" class="stop" disabled>Stop Auto-Click</button>
+    
+    <div style="margin-top: 10px;">
+      <button id="testClickBtn" style="background-color: #ff9800;">Test Click (Single)</button>
+      <button id="resetClickedBtn" style="background-color: #607d8b; margin-top: 5px;">Reset Clicked Markers</button>
+    </div>
+    
+    <div class="debug-info" style="margin-top: 10px; font-size: 11px; color: #666; max-height: 100px; overflow-y: auto;">
+      <div id="debugInfo">Debug info will appear here...</div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Acres.com Data Extractor",
+  "version": "1.0",
+  "description": "Monitor Acres.com JSON responses and save to CSV",
+  "manifest_version": 3,
+  "permissions": [
+    "webRequest",
+    "storage",
+    "downloads",
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
