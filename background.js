@@ -14,8 +14,8 @@ let autoClickInterval = null;
 const CLICK_DELAY = 1500; // Delay between clicks in milliseconds
 let currentTabId = null;
 
-// Define allowed FIPS codes
-const ALLOWED_FIPS_CODES = ['06019', '06107', '06029', '06031']; // Fresno, Tulare, Kern, Kings counties
+// Previously defined allowed FIPS codes - now we accept all counties
+// const ALLOWED_FIPS_CODES = ['06019', '06107', '06029', '06031']; // Fresno, Tulare, Kern, Kings counties
 
 // Initialize the extension when the service worker starts
 chrome.runtime.onInstalled.addListener(() => {
@@ -51,14 +51,9 @@ chrome.webRequest.onCompleted.addListener(
       if (data && data.id && !collectedIds.has(data.id)) {
         console.log('Found new property data:', data.id);
         
-        // Check if the FIPS code is in our allowed list
+        // Get the FIPS code for this property (now accepting all counties)
         const fipsCode = data.fips_code || '';
-        if (!ALLOWED_FIPS_CODES.includes(fipsCode)) {
-          console.log('Skipping property with FIPS code:', fipsCode, 'not in allowed list:', ALLOWED_FIPS_CODES);
-          return;
-        }
-        
-        console.log('Property has allowed FIPS code:', fipsCode);
+        console.log('Processing property with FIPS code:', fipsCode);
         
         // Add this ID to our set of processed IDs to prevent duplicates
         collectedIds.add(data.id);
